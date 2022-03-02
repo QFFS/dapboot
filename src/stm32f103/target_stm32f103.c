@@ -118,7 +118,20 @@ void target_gpio_setup(void) {
         }
     }
 #endif
+#if QFFS96BOOTUSEIO
+    {
+        uint8_t mode = GPIO_MODE_INPUT;
+        uint8_t conf = GPIO_CNF_INPUT_PULL_UPDOWN;
+        gpio_set_mode(BOOTKEYINPUT_GPIO_PORT, mode, conf, BOOTKEYINPUT_GPIO_PIN);
+        gpio_clear(BOOTKEYINPUT_GPIO_PORT, BOOTKEYINPUT_GPIO_PIN);
 
+        mode = GPIO_MODE_OUTPUT_10_MHZ;
+        conf = GPIO_CNF_OUTPUT_OPENDRAIN;
+        gpio_set_mode(BOOTKEYOUTPUT_GPIO_PORT, mode, conf, BOOTKEYOUTPUT_GPIO_PIN);
+        gpio_clear(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
+
+    }
+#endif
 #if HAVE_USB_PULLUP_CONTROL
     {
         const uint8_t mode = GPIO_MODE_OUTPUT_10_MHZ;
@@ -191,7 +204,16 @@ bool target_get_force_bootloader(void) {
         }
     }
 #endif
-
+#if QFFS96BOOTUSEIO
+    gpio_clear(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
+    int i;
+    for (i = 0; i < 100000; i++) {
+        __asm__("nop");
+    }
+    if (gpio_get(BOOTKEYINPUT_GPIO_PORT, BOOTKEYINPUT_GPIO_PIN)) {
+            force = true;
+        }
+#endif
     return force;
 }
 
