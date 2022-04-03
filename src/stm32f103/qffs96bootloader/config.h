@@ -19,6 +19,10 @@
 #ifndef CONFIG_H_INCLUDED
 #define CONFIG_H_INCLUDED
 
+#ifndef QFFS96BOOTUSEIO
+#define QFFS96BOOTUSEIO 1
+#endif
+
 #ifndef APP_BASE_ADDRESS
 #define APP_BASE_ADDRESS (0x08000000 + BOOTLOADER_OFFSET)
 #endif
@@ -33,6 +37,10 @@
 #endif
 #ifndef DFU_DOWNLOAD_AVAILABLE
 #define DFU_DOWNLOAD_AVAILABLE 1
+#endif
+
+#ifndef HAVE_BUTTON
+#define HAVE_BUTTON 0
 #endif
 
 #ifndef HAVE_LED
@@ -60,22 +68,18 @@
 #define USES_GPIOC 1
 #endif
 
-#ifndef QFFS96BOOTUSEIO
-#define QFFS96BOOTUSEIO 1
+#ifndef COL16_GPIO_PORT
+#define COL16_GPIO_PORT GPIOB
+#endif
+#ifndef COL16_GPIO_PIN
+#define COL16_GPIO_PIN  GPIO3
 #endif
 
-#ifndef BOOTKEYOUTPUT_GPIO_PORT
-#define BOOTKEYOUTPUT_GPIO_PORT GPIOB
+#ifndef ROW6_GPIO_PORT
+#define ROW6_GPIO_PORT GPIOB
 #endif
-#ifndef BOOTKEYOUTPUT_GPIO_PIN
-#define BOOTKEYOUTPUT_GPIO_PIN GPIO3
+#ifndef ROW6_GPIO_PIN
+#define ROW6_GPIO_PIN GPIO11
 #endif
-
-#ifndef BOOTKEYINPUT_GPIO_PORT
-#define BOOTKEYINPUT_GPIO_PORT GPIOB
-#endif
-#ifndef BOOTKEYINPUT_GPIO_PIN
-#define BOOTKEYINPUT_GPIO_PIN GPIO11
-#endif
-
+// #define USE_HSI 1 //for test, because 8Mhz xtal is on the road..
 #endif

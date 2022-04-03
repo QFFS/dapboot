@@ -30,6 +30,7 @@ export V
 BUILD_DIR      ?= ./build
 
 all: dapboot-bluepill.bin \
+	 dapboot-qffs96bootloader.bin\
      dapboot-maplemini.bin \
      dapboot-stlink.bin \
      dapboot-olimexstm32h103.bin \
@@ -62,6 +63,12 @@ dapboot-bluepill.bin: | $(BUILD_DIR)
 	@printf "  BUILD $(@)\n"
 	$(Q)$(MAKE) TARGET=BLUEPILL -C src/ clean
 	$(Q)$(MAKE) TARGET=BLUEPILL -C src/
+	$(Q)cp src/dapboot.bin $(BUILD_DIR)/$(@)
+
+dapboot-qffs96bootloader.bin: | $(BUILD_DIR)
+	@printf "  BUILD $(@)\n"
+	$(Q)$(MAKE) TARGET=qffs96bootloader -C src/ clean
+	$(Q)$(MAKE) TARGET=qffs96bootloader -C src/
 	$(Q)cp src/dapboot.bin $(BUILD_DIR)/$(@)
 
 dapboot-stlink.bin: | $(BUILD_DIR)

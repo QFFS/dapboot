@@ -122,14 +122,13 @@ void target_gpio_setup(void) {
     {
         uint8_t mode = GPIO_MODE_INPUT;
         uint8_t conf = GPIO_CNF_INPUT_PULL_UPDOWN;
-        gpio_set_mode(BOOTKEYINPUT_GPIO_PORT, mode, conf, BOOTKEYINPUT_GPIO_PIN);
-        gpio_clear(BOOTKEYINPUT_GPIO_PORT, BOOTKEYINPUT_GPIO_PIN);
+        gpio_set_mode(COL16_GPIO_PORT, mode, conf, COL16_GPIO_PIN);
+        gpio_set(COL16_GPIO_PORT, COL16_GPIO_PIN);
 
         mode = GPIO_MODE_OUTPUT_10_MHZ;
-        conf = GPIO_CNF_OUTPUT_OPENDRAIN;
-        gpio_set_mode(BOOTKEYOUTPUT_GPIO_PORT, mode, conf, BOOTKEYOUTPUT_GPIO_PIN);
-        gpio_clear(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
-
+        conf = GPIO_CNF_OUTPUT_PUSHPULL;
+        gpio_set_mode(ROW6_GPIO_PORT, mode, conf, ROW6_GPIO_PIN);
+        gpio_set(ROW6_GPIO_PORT, ROW6_GPIO_PIN);
     }
 #endif
 #if HAVE_USB_PULLUP_CONTROL
@@ -205,13 +204,15 @@ bool target_get_force_bootloader(void) {
     }
 #endif
 #if QFFS96BOOTUSEIO
-    gpio_clear(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
+    //use qmk key check method
+     gpio_clear(ROW6_GPIO_PORT, ROW6_GPIO_PIN);
     int i;
     for (i = 0; i < 100000; i++) {
         __asm__("nop");
     }
-    if (gpio_get(BOOTKEYINPUT_GPIO_PORT, BOOTKEYINPUT_GPIO_PIN)) {
+    if (!gpio_get(COL16_GPIO_PORT, COL16_GPIO_PIN)) {
             force = true;
+            gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
         }
 #endif
     return force;
