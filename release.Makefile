@@ -30,7 +30,7 @@ export V
 BUILD_DIR      ?= ./build
 
 all: dapboot-bluepill.bin \
-	 dapboot-qffs96bootloader.bin\
+     dapboot-qffs96bootloader.bin\
      dapboot-maplemini.bin \
      dapboot-stlink.bin \
      dapboot-olimexstm32h103.bin \
