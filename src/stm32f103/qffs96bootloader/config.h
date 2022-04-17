@@ -68,18 +68,18 @@
 #define USES_GPIOC 1
 #endif
 
-#ifndef COL16_GPIO_PORT
-#define COL16_GPIO_PORT GPIOB
+#ifndef BOOTKEYOUTPUT_GPIO_PORT
+#define BOOTKEYOUTPUT_GPIO_PORT GPIOB
 #endif
-#ifndef COL16_GPIO_PIN
-#define COL16_GPIO_PIN  GPIO3
+#ifndef BOOTKEYOUTPUT_GPIO_PIN
+#define BOOTKEYOUTPUT_GPIO_PIN GPIO3
 #endif
 
-#ifndef ROW6_GPIO_PORT
-#define ROW6_GPIO_PORT GPIOB
+#ifndef BOOTKEYINPUT_GPIO_PORT
+#define BOOTKEYINPUT_GPIO_PORT GPIOB
 #endif
-#ifndef ROW6_GPIO_PIN
-#define ROW6_GPIO_PIN GPIO11
+#ifndef BOOTKEYINPUT_GPIO_PIN
+#define BOOTKEYINPUT_GPIO_PIN GPIO11
 #endif
 // #define USE_HSI 1 //for test, because 8Mhz xtal is on the road..
 #endif
