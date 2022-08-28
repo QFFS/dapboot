@@ -87,6 +87,10 @@ void target_gpio_setup(void) {
         rcc_periph_clock_enable(RCC_GPIOC);
     }
 
+     //remap JTAG PIN, some pin will use for enter to bootloader
+    rcc_periph_clock_enable(RCC_AFIO);
+    gpio_primary_remap(AFIO_MAPR_SWJ_CFG_JTAG_OFF_SW_ON, 0);
+  
     /* Setup LEDs */
 #if HAVE_LED
     {
@@ -121,14 +125,13 @@ void target_gpio_setup(void) {
 #if QFFS96BOOTUSEIO
     {
         uint8_t mode = GPIO_MODE_INPUT;
-        uint8_t conf = GPIO_CNF_INPUT_FLOAT ;
+        uint8_t conf = GPIO_CNF_INPUT_PULL_UPDOWN ;
         gpio_set_mode(BOOTKEYINPUT_GPIO_PORT, mode, conf, BOOTKEYINPUT_GPIO_PIN);
         gpio_clear(BOOTKEYINPUT_GPIO_PORT, BOOTKEYINPUT_GPIO_PIN);
 
         mode = GPIO_MODE_OUTPUT_10_MHZ;
-        conf = GPIO_CNF_OUTPUT_OPENDRAIN;
+        conf = GPIO_CNF_OUTPUT_PUSHPULL;
         gpio_set_mode(BOOTKEYOUTPUT_GPIO_PORT, mode, conf, BOOTKEYOUTPUT_GPIO_PIN);
-        gpio_clear(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
     }
 #endif
 #if HAVE_USB_PULLUP_CONTROL
@@ -204,15 +207,15 @@ bool target_get_force_bootloader(void) {
     }
 #endif
 #if QFFS96BOOTUSEIO
-    gpio_clear(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
+    gpio_set(BOOTKEYOUTPUT_GPIO_PORT, BOOTKEYOUTPUT_GPIO_PIN);
     int i;
-    for (i = 0; i < 500000; i++) {
+    for (i = 0; i < 5000; i++) {
         __asm__("nop");
     }
     if (gpio_get(BOOTKEYINPUT_GPIO_PORT, BOOTKEYINPUT_GPIO_PIN)) {
             force = true;
             gpio_clear(LED_GPIO_PORT, LED_GPIO_PIN);
-        }
+    }
 #endif
     return force;
 }
